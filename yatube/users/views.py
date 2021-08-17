@@ -45,10 +45,6 @@ def user_contact(request):
         # Если все данные формы валидны - работаем с "очищенными данными" формы
         if form.is_valid():
             # Берём валидированные данные формы из словаря form.cleaned_data
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            subject = form.cleaned_data['subject']
-            message = form.cleaned_data['body']
             # При необходимости обрабатываем данные
             contact = Contact.objects.get(pk=3)
             # Создаём объект формы и передаём в него объект модели с pk=3

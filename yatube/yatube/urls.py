@@ -10,3 +10,4 @@ urlpatterns = [
     path('', include('posts.urls', namespace='posts')),
     path('about/', include('about.urls', namespace='about')),
 ]
+
