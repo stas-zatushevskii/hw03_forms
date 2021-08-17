@@ -35,11 +35,9 @@ def index(request):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    author_full_name = User.get_full_name(author)
     template = 'posts/profile.html'
     posts = Post.objects.filter(
                 author=author).order_by('-pub_date')
-    post_amount = posts.count()
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -60,12 +58,11 @@ def post_detail(request, post_id):
         'posts_count': posts_count,
         'post_group': post_group,
     }
-    return render(request, 'posts/post_detail.html', context) 
+    return render(request, 'posts/post_detail.html', context)
 
 
 @login_required
 def post_create(request):
-    group = Group.objects.all()
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
@@ -87,7 +84,6 @@ def post_edit(request, post_id):
             post = form.save(commit=False)
             if post.author == request.user:
                 post.save()
-                is_edit = True
                 return redirect('posts:post_detail', post_id=post_id)
         return render(request, 'posts/update_post.html', {'form': form})
     form = PostForm()
