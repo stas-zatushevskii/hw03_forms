@@ -77,7 +77,6 @@ def post_create(request):
 
 @login_required
 def post_edit(request, post_id):
-    form = PostForm(request.POST or None)
     if request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)
         form = PostForm(request.POST or None, instance=post)
@@ -86,4 +85,5 @@ def post_edit(request, post_id):
             if post.author == request.user:
                 post.save()
                 return redirect('posts:post_detail', post_id=post_id)
+    form = PostForm()
     return render(request, 'posts/update_post.html', {'form': form})
