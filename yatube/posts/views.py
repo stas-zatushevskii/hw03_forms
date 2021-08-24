@@ -51,7 +51,9 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     user_post = get_object_or_404(Post, pk=post_id)
-    posts_count = user_post.author.posts.all().count()
+    posts = Post.objects.filter(
+                pk=post_id)
+    posts_count = posts.count()
     post_group = user_post.group
     context = {
         'user_post': user_post,
@@ -63,18 +65,19 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
+    form = PostForm(request.POST or None)
     if request.method == 'POST':
-        form = PostForm(request.POST or None)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-        return redirect('posts:profile', username=request.user.username)
-    return render(request, 'posts/create_post.html')
+            return redirect('posts:profile', username=request.user.username)
+    return render(request, 'posts/create_post.html', {'form': form})
 
 
 @login_required
 def post_edit(request, post_id):
+    form = PostForm(request.POST or None)
     if request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)
         form = PostForm(request.POST or None, instance=post)
@@ -82,6 +85,6 @@ def post_edit(request, post_id):
             post = form.save(commit=False)
             if post.author == request.user:
                 post.save()
+                is_edit = True
                 return redirect('posts:post_detail', post_id=post_id)
-        return render(request, 'posts/update_post.html', {'form': form})
-    return render(request, 'posts/update_post.html')
+    return render(request, 'posts/update_post.html', {'form': form})
