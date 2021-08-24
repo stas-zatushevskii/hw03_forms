@@ -85,6 +85,5 @@ def post_edit(request, post_id):
             post = form.save(commit=False)
             if post.author == request.user:
                 post.save()
-                is_edit = True
                 return redirect('posts:post_detail', post_id=post_id)
     return render(request, 'posts/update_post.html', {'form': form})
