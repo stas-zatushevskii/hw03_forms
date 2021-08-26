@@ -55,7 +55,7 @@ def post_detail(request, post_id):
     posts_count = posts.count()
     post_group = user_post.group
     context = {
-        'user_post': user_post, # сам пост
+        'user_post': user_post,  # сам пост
         'posts_count': posts_count,
         'post_group': post_group,
     }
