@@ -51,7 +51,7 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     user_post = get_object_or_404(Post, pk=post_id)
-    posts = Post.objects.all.filter(pk=post_id)
+    posts = Post.objects.filter(pk=post_id).all()
     posts_count = posts.count()
     post_group = user_post.group
     context = {
