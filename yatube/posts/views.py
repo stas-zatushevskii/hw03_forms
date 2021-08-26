@@ -1,16 +1,16 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 from .models import Post, User
 from .models import Group
 from .forms import PostForm
-from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
 
 
 def group_posts(request, slug):
     template = 'posts/group_list.html'
     group = get_object_or_404(Group, slug=slug)
-    posts = Post.objects.filter(group=group)
+    posts = group.posts.all()
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -51,11 +51,11 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     user_post = get_object_or_404(Post, pk=post_id)
-    posts = Post.objects.filter(pk=post_id)
+    posts = Post.objects.all.filter(pk=post_id)
     posts_count = posts.count()
     post_group = user_post.group
     context = {
-        'user_post': user_post,
+        'user_post': user_post, # сам пост
         'posts_count': posts_count,
         'post_group': post_group,
     }
@@ -80,7 +80,7 @@ def post_edit(request, post_id):
         post = get_object_or_404(Post, id=post_id)
         form = PostForm(request.POST or None, instance=post)
         if form.is_valid():
-            post = form.save(commit=False)
+            post = form.save()
             if post.author == request.user:
                 post.save()
                 return redirect('posts:post_detail', post_id=post_id)
