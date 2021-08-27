@@ -3,7 +3,7 @@
 {% load static %}
 <html lang="ru">
   <head>  
-    <title>Пост {{post.text}}</title>
+    {% block title %}{{post.text}}{% endblock %}
   </head>
   <body>       
     <header>
