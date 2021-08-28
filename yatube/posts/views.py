@@ -84,7 +84,7 @@ def post_edit(request, post_id):
             if post.author == request.user:
                 post.save()
                 context = {
-                'is_edit': True,
+                    'is_edit': True,
                 }
                 return redirect(
                     'posts:post_detail', context, post_id=post_id
