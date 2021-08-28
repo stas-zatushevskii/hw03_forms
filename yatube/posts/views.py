@@ -84,10 +84,10 @@ def post_edit(request, post_id):
             if post.author == request.user:
                 post.save()
                 return redirect('posts:post_detail', post_id=post_id)
-        context = {
-            'form': form,
-            'post': post,
-            'is_edit': True,
-        }
+    context = {
+        'form': form,
+        'post': post,
+        'is_edit': True,
+    }
     form = PostForm(instance=post)
     return render(request, 'posts/create_post.html', context)
