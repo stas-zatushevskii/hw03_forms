@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
-{% block title %}Новый пост{% endblock %}
-{% block header %}Новый пост{% endblock %}
+{% block title %}
+{% if 'edit' not in request.get_full_path %}
+Новый пост
+{% else %}
+    Редактируеммый пост
+{% endif %}
+{% endblock %}
+{% block header %}
+  {% if 'edit' not in request.get_full_path %}
+    Форма добавления публикации
+  {% else %}
+        Форма редактирования публикации
+    {% endif %}
+{% endblock %}
 {% block content %}
     <main>
       <div class="container py-5">
